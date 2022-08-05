@@ -1,7 +1,41 @@
-import '../styles/globals.css'
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
+import { magic } from "@utils/magic-client";
+import LoadingSpinner from "@components/utils/LoadingSpinner";
+import "@styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const handleRouteComple = () => {
+      setIsLoading(false);
+    };
+
+    router.events.on("routeChangeComplete", handleRouteComple);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteComple);
+    };
+  }, []);
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+    const loggedIn = await magic.user.isLoggedIn();
+    // if (loggedIn) {
+    //   router.push("/");
+    // } else {
+    //   router.push("/login");
+    // }
+  };
+
+  useEffect(() => {
+    // handleLogin();
+  }, []);
+
+  return isLoading ? <LoadingSpinner /> : <Component {...pageProps} />;
 }
 
-export default MyApp
+export default MyApp;

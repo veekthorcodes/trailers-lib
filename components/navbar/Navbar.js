@@ -1,14 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Image from "next/image";
 
+import { magic } from "@utils/magic-client";
 import styles from "./Navbar.module.css";
+import LoadingSpinner from "@components/utils/LoadingSpinner";
 
-const Navbar = (props) => {
-  const { user } = props;
+const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [user, setUser] = useState("Guest");
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+
+  const getUser = async () => {
+    try {
+      const { email } = await magic.user.getMetadata();
+      if (email) {
+        setUser(email);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  useEffect(() => {
+    const handleRouteComplete = () => {
+      setIsLoading(false);
+    };
+
+    router.events.on("routeChangeComplete", handleRouteComplete);
+    router.events.on("routeChangeError", handleRouteComplete);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteComplete);
+      router.events.off("routeChangeError", handleRouteComplete);
+    };
+  }, []);
 
   const handleNavHome = (e) => {
     e.preventDefault();
@@ -25,6 +56,16 @@ const Navbar = (props) => {
     setShowDropdown(!showDropdown);
   };
 
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await magic.user.logout();
+      router.push("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -33,6 +74,7 @@ const Navbar = (props) => {
             <div className={styles.logoWrapper}>Next-Flix</div>
           </a>
         </Link>
+
         <ul className={styles.navItems}>
           <li className={styles.navItem} onClick={handleNavHome}>
             Home
@@ -41,20 +83,26 @@ const Navbar = (props) => {
             My List
           </li>
         </ul>
+
         <div className={styles.leftNavContainer}>
           <div>
             <button className={styles.userBtn} onClick={handleDropdown}>
-              {user} {showDropdown ? "▲" : "▼"}
+              {user}
             </button>
+            {showDropdown ? (
+              <span className={styles.icon}>▲</span>
+            ) : (
+              <span className={styles.icon}>▼</span>
+            )}
           </div>
           {showDropdown && (
             <div className={styles.navDropdown}>
-              <Link href="/login">
-                <a className={styles.linkName}>Sign Out</a>
-              </Link>
-              {/* <div className={styles.lineWrapper}></div> */}
+              <a className={styles.linkName} onClick={handleLogout}>
+                Sign Out
+              </a>
             </div>
           )}
+          {isLoading && <LoadingSpinner />}
         </div>
       </div>
     </div>

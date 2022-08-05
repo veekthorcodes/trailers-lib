@@ -1,13 +1,11 @@
 import Head from "next/head";
-import Image from "next/image";
 
 import Banner from "@components/banner/Banner";
 import Navbar from "@components/navbar/Navbar";
-import Card from "@components/card/Card";
 import CardSection from "@components/card/CardSection";
 
 import styles from "@styles/Home.module.css";
-import { getPopularVideos, getVideos } from "lib/videos";
+import { getPopularVideos, getVideos } from "@utils/videos";
 
 export const getServerSideProps = async () => {
   const allVideos = {
@@ -39,15 +37,16 @@ export const getServerSideProps = async () => {
 };
 
 export default function Home({ allVideos }) {
-  const commonCards = allVideos.common.map((video) => {
+  const commonCards = allVideos.common.map((video, idx) => {
     return (
-      <CardSection title={video.title} videos={video.result} size="small" />
+      <CardSection key={idx} title={video.title} videos={video.result} size="small" />
     );
   });
 
-  const popularCards = allVideos.popular.map((video) => {
+  const popularCards = allVideos.popular.map((video, idx) => {
     return (
       <CardSection
+        key={idx}
         title={`Most popular in the '${video.region}'`}
         videos={video.result}
         size="medium"

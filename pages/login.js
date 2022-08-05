@@ -1,24 +1,66 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import styles from "@styles/Login.module.css";
+import LoadingSpinner from "@components/utils/LoadingSpinner";
+import { magic } from "@utils/magic-client";
+import { validateEmail } from "@utils/validate-email";
 
 const login = () => {
-  const [emailValid, setEmailValid] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteComplete = () => {
+      setIsLoading(false);
+    };
+
+    router.events.on("routeChangeComplete", handleRouteComplete);
+    router.events.on("routeChangeError", handleRouteComplete);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteComplete);
+      router.events.off("routeChangeError", handleRouteComplete);
+    };
+  }, [router]);
 
   const handleInputChange = (e) => {
-    setEmailValid("")
+    setErrorMsg("");
     setEmail(e.target.value);
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault()
-    if (!email.includes(["@", ".com"]) || email.length < 0) {
-      setEmailValid("Please enter a valid email");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    let emailValid = validateEmail(email);
+    if (emailValid) {
+      if (email == "veekthorcodes@gmail.com") {
+        setIsLoading(true);
+        try {
+          const didToken = await magic.auth.loginWithMagicLink({ email });
+
+          if (didToken) {
+            router.push("/");
+          }
+        } catch (error) {
+          console.log("Error logging in", error);
+          setIsLoading(false);
+        }
+      } else {
+        setErrorMsg("Authentication Error.");
+        setIsLoading(false);
+      }
+    } else {
+      setErrorMsg("Invalid Email Address.");
+      setIsLoading(false);
     }
   };
+
   return (
     <div>
       <Head>
@@ -26,11 +68,9 @@ const login = () => {
       </Head>
 
       <div className={styles.container}>
-        <Link href="/">
-          <a>
-            <div className={styles.logoWrapper}>Next-Flix</div>
-          </a>
-        </Link>
+        <a>
+          <div className={styles.logoWrapper}>Next-Flix</div>
+        </a>
 
         <main className={styles.main}>
           <form className={styles.form}>
@@ -44,12 +84,11 @@ const login = () => {
               value={email}
               onChange={handleInputChange}
             />
-            <p className={styles.error}>{emailValid}</p>
-            <button
-              onClick={handleLogin}
-              className={styles.loginBtn}
-              
-            >Log In</button>
+            <p className={styles.error}>{errorMsg}</p>
+            <button onClick={handleLogin} className={styles.loginBtn}>
+              {"Sign In"}
+            </button>
+            {isLoading && <LoadingSpinner />}
           </form>
         </main>
       </div>
