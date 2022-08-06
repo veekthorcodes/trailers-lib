@@ -9,7 +9,7 @@ import LoadingSpinner from "@components/utils/LoadingSpinner";
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [user, setUser] = useState("Guest");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const getUser = async () => {
@@ -25,20 +25,6 @@ const Navbar = () => {
 
   useEffect(() => {
     getUser();
-  }, []);
-
-  useEffect(() => {
-    const handleRouteComplete = () => {
-      setIsLoading(false);
-    };
-
-    router.events.on("routeChangeComplete", handleRouteComplete);
-    router.events.on("routeChangeError", handleRouteComplete);
-
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteComplete);
-      router.events.off("routeChangeError", handleRouteComplete);
-    };
   }, []);
 
   const handleNavHome = (e) => {
@@ -58,9 +44,13 @@ const Navbar = () => {
 
   const handleLogout = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
-      await magic.user.logout();
-      router.push("/login");
+      const loggedOut = await magic.user.logout();
+      if (loggedOut) {
+        router.push("/login");
+        setIsLoading(false);
+      }
     } catch (error) {
       console.log(error);
     }

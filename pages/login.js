@@ -21,11 +21,9 @@ const login = () => {
     };
 
     router.events.on("routeChangeComplete", handleRouteComplete);
-    router.events.on("routeChangeError", handleRouteComplete);
 
     return () => {
       router.events.off("routeChangeComplete", handleRouteComplete);
-      router.events.off("routeChangeError", handleRouteComplete);
     };
   }, [router]);
 

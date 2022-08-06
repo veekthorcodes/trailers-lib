@@ -22,17 +22,16 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   const handleLogin = async () => {
-    setIsLoading(true);
     const loggedIn = await magic.user.isLoggedIn();
-    // if (loggedIn) {
-    //   router.push("/");
-    // } else {
-    //   router.push("/login");
-    // }
+    if (loggedIn) {
+      router.push("/");
+    } else {
+      router.push("/login");
+    }
   };
 
   useEffect(() => {
-    // handleLogin();
+    handleLogin();
   }, []);
 
   return isLoading ? <LoadingSpinner /> : <Component {...pageProps} />;

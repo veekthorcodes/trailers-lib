@@ -4,6 +4,16 @@ const nextConfig = {
   images: {
     domains: ["images.unsplash.com", "i.ytimg.com", "yt3.ggpht.com"],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/',
+        destination: '/',
+      },
+    ]
+  },
 };
 
+
 module.exports = nextConfig;
+

@@ -1,5 +1,5 @@
 import React from "react";
-
+import Link from "next/link";
 import Card from "./Card";
 import styles from "./CardSection.module.css";
 
@@ -11,7 +11,11 @@ const CardSection = (props) => {
 
       <div className={styles.cardWrapper}>
         {videos.map((video, idx) => (
-          <Card key={idx} imgUrl={video.imgUrl} size={size} />
+          <Link href={`/video/${video.id}`} key={idx}>
+            <a>
+              <Card imgUrl={video.imgUrl} size={size} />
+            </a>
+          </Link>
         ))}
       </div>
     </div>
