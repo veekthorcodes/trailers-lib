@@ -12,7 +12,6 @@ const videosFromYT = async (search_url) => {
 export const getCommonVideos = async (search_url) => {
   try {
     const isDev = process.env.DEVELOPMENT;
-    console.log(isDev);
     const data = isDev ? testVideoData : await videosFromYT(search_url);
     if (data.error) {
       console.log("error from videos.js", data.error.message);
@@ -26,7 +25,9 @@ export const getCommonVideos = async (search_url) => {
         channel: item.snippet.channelTitle,
         publishedTime: item.snippet.publishedAt,
         description: item.snippet.description,
-        viewCount: item.statistics ? item.statistics.viewCount : "not available",
+        viewCount: item.statistics
+          ? item.statistics.viewCount
+          : "not available",
       };
     });
   } catch (err) {

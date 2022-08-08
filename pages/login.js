@@ -37,20 +37,26 @@ const login = () => {
 
     let emailValid = validateEmail(email);
     if (emailValid) {
-      if (email == "veekthorcodes@gmail.com") {
-        setIsLoading(true);
-        try {
-          const didToken = await magic.auth.loginWithMagicLink({ email });
+      setIsLoading(true);
+      try {
+        const didToken = await magic.auth.loginWithMagicLink({ email });
+        if (didToken) {
+          const req = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${didToken}`,
+              "content-type": "application/json",
+            },
+          });
 
-          if (didToken) {
+          const res = await req.json();
+          console.log(res);
+          if (res.done) {
             router.push("/");
           }
-        } catch (error) {
-          console.log("Error logging in", error);
-          setIsLoading(false);
         }
-      } else {
-        setErrorMsg("Authentication Error.");
+      } catch (error) {
+        console.log("Error logging in", error);
         setIsLoading(false);
       }
     } else {

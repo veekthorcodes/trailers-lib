@@ -8,13 +8,15 @@ import LoadingSpinner from "@components/utils/LoadingSpinner";
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [user, setUser] = useState("Guest");
+  const [user, setUser] = useState("Loading...");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const getUser = async () => {
     try {
       const { email } = await magic.user.getMetadata();
+      const didToken = await magic.user.getIdToken();
+      console.log({ didToken });
       if (email) {
         setUser(email);
       }

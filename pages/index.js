@@ -7,7 +7,6 @@ import Navbar from "@components/navbar/Navbar";
 import CardSection from "@components/card/CardSection";
 import LoadingSpinner from "@components/utils/LoadingSpinner";
 import { getPopularVideos, getVideos } from "@utils/videos";
-import { queryHasuraGQL } from "@utils/db/hasura";
 import styles from "@styles/Home.module.css";
 
 export const getServerSideProps = async () => {
@@ -45,8 +44,6 @@ export default function Home({
       router.events.off("routeChangeComplete", handleRouteComplete);
     };
   }, []);
-
-  queryHasuraGQL();
 
   return (
     <div>
