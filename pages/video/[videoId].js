@@ -2,23 +2,27 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 
-import Navbar from "@components/navbar/Navbar";
 import LoadingSpinner from "@components/utils/LoadingSpinner";
+import Navbar from "@components/navbar/Navbar";
+import DisLike from "@components/icons/Dislike";
+import Like from "@components/icons/Like";
 import styles from "@styles/Video.module.css";
 import { getVideoById } from "@utils/videos";
+import useLoadingState from "@utils/hooks/useLoadingState";
 
 Modal.setAppElement("#__next");
 
 export async function getStaticProps(context) {
   const videoId = context.params.videoId;
-  console.log(videoId)
   const videos = await getVideoById(videoId);
-
-  const video = videos.filter((video) => video.id === videoId);
-  console.log(video)
-
+  const video = videos.filter((video) => {
+    return video.id === videoId;
+  });
   return {
-    props: { videos: videos.length > 0 ? video[0] : {} },
+    props: {
+      video: video.length > 0 ? video[0] : {},
+    },
+    revalidate: 10,
   };
 }
 
@@ -31,28 +35,57 @@ export async function getStaticPaths() {
   return { paths, fallback: true };
 }
 
-const Video = ({ videos }) => {
+const Video = ({ video }) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [toggleLike, setToggleLike] = useState(false);
+  const [toggleDislike, setToggleDislike] = useState(false);
+  const videoId = router.query.videoId;
+  const loading = useLoadingState();
 
   useEffect(() => {
-    const handleRouteChange = () => {
-      setLoading(true);
+    const videoData = async () => {
+      const res = await fetch(`/api/stats?videoId=${videoId}`);
+      const data = await res.json();
+      if (data.video) {
+        data?.video[0]?.favorite ? setToggleLike(true) : setToggleDislike(true);
+      }
     };
-    const handleRouteComplete = () => {
-      setLoading(false);
-    };
-
-    router.events.on("routeChangeStart", handleRouteChange);
-    router.events.on("routeChangeComplete", handleRouteComplete);
-
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
-      router.events.off("routeChangeComplete", handleRouteComplete);
-    };
+    videoData();
   }, []);
 
-  const { title, publishTime, description, channel, viewCount } = videos;
+  const handleLike = async () => {
+    setToggleLike(!toggleLike);
+    setToggleDislike(false);
+    const res = await fetch("/api/stats", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        videoId,
+        watched: true,
+        favorite: !toggleLike,
+      }),
+    });
+  };
+
+  const handleDisLike = async () => {
+    setToggleLike(false);
+    setToggleDislike(!toggleDislike);
+    const res = await fetch("/api/stats", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        videoId,
+        watched: true,
+        favorite: false,
+      }),
+    });
+  };
+
+  const { title, publishTime, description, channel, viewCount } = video;
   return (
     <div>
       {loading && <LoadingSpinner />}
@@ -69,10 +102,23 @@ const Video = ({ videos }) => {
           type="text/html"
           width="100%"
           height="360"
-          src={`https://www.youtube.com/embed/${router.query.videoId}?autoplay=0&origin=http://example.com&controls=0&rel=0`}
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=0&origin=http://example.com&controls=0&rel=0`}
           frameBorder="0"
           className={styles.videoPlayer}
         ></iframe>
+
+        <div className={styles.likeDislikeBtnWrapper}>
+          <button onClick={handleLike}>
+            <div className={styles.btnWrapper}>
+              <Like selected={toggleLike} />
+            </div>
+          </button>
+          <button onClick={handleDisLike}>
+            <div className={styles.btnWrapper}>
+              <DisLike selected={toggleDislike} />
+            </div>
+          </button>
+        </div>
 
         <div className={styles.modalBody}>
           <div className={styles.detail}>

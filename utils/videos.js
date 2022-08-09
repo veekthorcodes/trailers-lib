@@ -1,4 +1,5 @@
 import testVideoData from "../data/videos.json";
+import { myListVideos, watchedVideos } from "./db/hasura";
 
 const videosFromYT = async (search_url) => {
   const YT_API_KEY = process.env.YT_API_KEY;
@@ -21,7 +22,7 @@ export const getCommonVideos = async (search_url) => {
       return {
         id: item.id.videoId,
         title: item.snippet.title,
-        imgUrl: item.snippet.thumbnails.high.url,
+        imgUrl: `https://i.ytimg.com/vi/${item.id.videoId}/maxresdefault.jpg`,
         channel: item.snippet.channelTitle,
         publishedTime: item.snippet.publishedAt,
         description: item.snippet.description,
@@ -49,4 +50,25 @@ export const getPopularVideos = async (region) => {
 export const getVideoById = async (videoId) => {
   const SEARCH_URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
   return await getCommonVideos(SEARCH_URL);
+};
+
+export const getWatchAgainVideos = async (token, userId) => {
+  const videos = await watchedVideos(token, userId);
+
+  return videos.map((video) => {
+    return {
+      id: video.videoId,
+      imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+    };
+  });
+};
+
+export const getMyListVideos = async (token, userId) => {
+  const videos = await myListVideos(token, userId);
+  return videos?.map((video) => {
+    return {
+      id: video.videoId,
+      imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+    };
+  });
 };

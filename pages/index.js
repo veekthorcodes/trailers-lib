@@ -1,22 +1,37 @@
-import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
+import useVerifyTokenOrRedirectUser from "@utils/hooks/useVerifyTokenOrRedirectUser.js";
+import LoadingSpinner from "@components/utils/LoadingSpinner";
+import useLoadingState from "@utils/hooks/useLoadingState";
+import CardSection from "@components/card/CardSection";
 import Banner from "@components/banner/Banner";
 import Navbar from "@components/navbar/Navbar";
-import CardSection from "@components/card/CardSection";
-import LoadingSpinner from "@components/utils/LoadingSpinner";
-import { getPopularVideos, getVideos } from "@utils/videos";
 import styles from "@styles/Home.module.css";
+import {
+  getWatchAgainVideos,
+  getPopularVideos,
+  getVideos,
+} from "@utils/videos";
 
-export const getServerSideProps = async () => {
-  const DisneyVideos = await getVideos("Disney");
-  const MarvelVideos = await getVideos("Marvel");
+export const getServerSideProps = async (context) => {
+  const { userId, token } = await useVerifyTokenOrRedirectUser(context);
+
+  const watchAgainVideos = await getWatchAgainVideos(token, userId);
   const ProductivityVideos = await getVideos("Productiviy");
   const PopularVideos = await getPopularVideos("US");
+  const DisneyVideos = await getVideos("Disney");
+  const MarvelVideos = await getVideos("Marvel");
 
   return {
-    props: { DisneyVideos, MarvelVideos, ProductivityVideos, PopularVideos },
+    props: {
+      DisneyVideos,
+      MarvelVideos,
+      ProductivityVideos,
+      PopularVideos,
+      watchAgainVideos,
+    },
   };
 };
 
@@ -25,26 +40,9 @@ export default function Home({
   MarvelVideos,
   ProductivityVideos,
   PopularVideos,
+  watchAgainVideos,
 }) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const handleRouteChange = () => {
-      setLoading(true);
-    };
-    const handleRouteComplete = () => {
-      setLoading(false);
-    };
-
-    router.events.on("routeChangeStart", handleRouteChange);
-    router.events.on("routeChangeComplete", handleRouteComplete);
-
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
-      router.events.off("routeChangeComplete", handleRouteComplete);
-    };
-  }, []);
-
+  const loading = useLoadingState();
   return (
     <div>
       <Head>
@@ -53,7 +51,7 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {loading && <LoadingSpinner />}
-      <Navbar user="codes@company.com" />
+      <Navbar user="" />
       <Banner
         videoId="Yj0l7iGKh8g"
         title="The Flash"
@@ -61,14 +59,19 @@ export default function Home({
         imgUrl="/static/theflashcover.jpg"
       />
       <div className={styles.sectionWrapper}>
-        <CardSection title="Marvel" videos={MarvelVideos} size="small" />
+        <CardSection title="Marvel" videos={MarvelVideos} size="large" />
+        <CardSection
+          title="Watch Again"
+          videos={watchAgainVideos}
+          size="small"
+        />
         <CardSection title="Disney" videos={DisneyVideos} size="medium" />
+        <CardSection title="Popular" videos={PopularVideos} size="small" />
         <CardSection
           title="Productivity"
           videos={ProductivityVideos}
           size="large"
         />
-        <CardSection title="Popular" videos={PopularVideos} size="small" />
       </div>
     </div>
   );

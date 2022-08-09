@@ -50,13 +50,11 @@ const login = () => {
           });
 
           const res = await req.json();
-          console.log(res);
           if (res.done) {
             router.push("/");
           }
         }
       } catch (error) {
-        console.log("Error logging in", error);
         setIsLoading(false);
       }
     } else {

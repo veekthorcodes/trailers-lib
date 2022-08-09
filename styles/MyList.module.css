@@ -1,0 +1,9 @@
+.main {
+    padding-bottom: 4rem /* 64px */;
+    margin-top: 6rem /* 96px */;
+  }
+  
+  .sectionWrapper {
+    width: 90%;
+    margin: 1.5rem auto;
+  }

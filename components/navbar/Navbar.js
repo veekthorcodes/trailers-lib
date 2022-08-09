@@ -2,30 +2,28 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
+import LoadingSpinner from "@components/utils/LoadingSpinner";
 import { magic } from "@utils/magic-client";
 import styles from "./Navbar.module.css";
-import LoadingSpinner from "@components/utils/LoadingSpinner";
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [user, setUser] = useState("Loading...");
+  const [didToken, setDidToken] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const getUser = async () => {
-    try {
-      const { email } = await magic.user.getMetadata();
-      const didToken = await magic.user.getIdToken();
-      console.log({ didToken });
-      if (email) {
-        setUser(email);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
+    const getUser = async () => {
+      try {
+        const { email } = await magic.user.getMetadata();
+        const didToken = await magic.user.getIdToken();
+        setUser(email);
+        setDidToken(didToken);
+      } catch (err) {
+        console.error("could not get email", err);
+      }
+    };
     getUser();
   }, []);
 
@@ -48,14 +46,21 @@ const Navbar = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const loggedOut = await magic.user.logout();
-      if (loggedOut) {
-        router.push("/login");
-        setIsLoading(false);
-      }
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const res = await response.json();
     } catch (error) {
-      console.log(error);
+      setIsLoading(false);
+      console.error("Error logging out", error);
+      router.push("/login");
     }
+
+    setIsLoading(false);
   };
 
   return (
