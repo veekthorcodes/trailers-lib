@@ -9,21 +9,15 @@ import CardSection from "@components/card/CardSection";
 import Banner from "@components/banner/Banner";
 import Navbar from "@components/navbar/Navbar";
 import styles from "@styles/Home.module.css";
-import {
-  getWatchAgainVideos,
-  getPopularVideos,
-  getVideos,
-} from "@utils/videos";
+import { getWatchAgainVideos, getVideos } from "@utils/videos";
 
 export const getServerSideProps = async (context) => {
   const { userId, token } = await verifyTokenOrRedirectUser(context);
-
-  const watchAgainVideos = (await getWatchAgainVideos(token, userId)) || [];
-  const AnimeVideos = (await getVideos("Anime Trailer")) || [];
-  // const PopularVideos = await getPopularVideos("US");
-  const DisneyVideos = (await getVideos("Disney Trailers")) || [];
-  const MarvelVideos = (await getVideos("Marvel Trailers")) || [];
-  const DcVideos = (await getVideos("DC Trailers")) || [];
+  const watchAgainVideos = await getWatchAgainVideos(token, userId);
+  const AnimeVideos = await getVideos("Anime Trailer");
+  const DisneyVideos = await getVideos("Disney Trailers");
+  const MarvelVideos = await getVideos("Marvel Trailers");
+  const DcVideos = await getVideos("DC Trailers");
 
   return {
     props: {

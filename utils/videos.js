@@ -12,7 +12,8 @@ const videosFromYT = async (search_url) => {
 
 export const getCommonVideos = async (search_url) => {
   try {
-    const data = testVideoData;
+    const isDev = process.env.DEVELOPMENT;
+    const data = isDev ? testVideoData : await videosFromYT(search_url);
     if (data.error) {
       console.log("error from videos.js", data.error.message);
       return [];

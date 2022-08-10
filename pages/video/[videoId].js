@@ -32,7 +32,7 @@ export async function getStaticPaths() {
     return { params: { videoId } };
   });
 
-  return { paths, fallback: true };
+  return { paths, fallback: "blocking" };
 }
 
 const Video = ({ video }) => {
