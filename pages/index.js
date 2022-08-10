@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-import useVerifyTokenOrRedirectUser from "@utils/hooks/useVerifyTokenOrRedirectUser.js";
+import verifyTokenOrRedirectUser from "@utils/hooks/verifyTokenOrRedirectUser.js.js";
 import LoadingSpinner from "@components/utils/LoadingSpinner";
 import useLoadingState from "@utils/hooks/useLoadingState";
 import CardSection from "@components/card/CardSection";
@@ -16,7 +16,7 @@ import {
 } from "@utils/videos";
 
 export const getServerSideProps = async (context) => {
-  const { userId, token } = await useVerifyTokenOrRedirectUser(context);
+  const { userId, token } = await verifyTokenOrRedirectUser(context);
 
   const watchAgainVideos = await getWatchAgainVideos(token, userId);
   const AnimeVideos = await getVideos("Anime Trailer");

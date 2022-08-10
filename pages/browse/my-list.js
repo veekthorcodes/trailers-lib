@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import useVerifyTokenOrRedirectUser from "@utils/hooks/useVerifyTokenOrRedirectUser.js";
+import verifyTokenOrRedirectUser from "@utils/hooks/verifyTokenOrRedirectUser.js";
 import LoadingSpinner from "@components/utils/LoadingSpinner";
 import useLoadingState from "@utils/hooks/useLoadingState";
 import CardSection from "@components/card/CardSection";
@@ -9,7 +9,7 @@ import Navbar from "@components/navbar/Navbar";
 import styles from "@styles/MyList.module.css";
 
 export async function getServerSideProps(context) {
-  const { userId, token } = await useVerifyTokenOrRedirectUser(context);
+  const { userId, token } = await verifyTokenOrRedirectUser(context);
   const myListVideos = await getMyListVideos(token, userId);
   return {
     props: {

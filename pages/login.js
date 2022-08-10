@@ -8,7 +8,7 @@ import LoadingSpinner from "@components/utils/LoadingSpinner";
 import { magic } from "@utils/magic-client";
 import { validateEmail } from "@utils/validate-email";
 
-const login = () => {
+const Login = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -98,4 +98,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

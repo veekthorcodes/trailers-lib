@@ -26,7 +26,7 @@ const Banner = (props) => {
           <h2 className={styles.subTitle}>{subTitle}</h2>
           <div className={styles.playBtnWrapper}>
             <button onClick={playHandler} className={styles.playBtn}>
-              <Image src="/static/play.svg" width="32px" height="32px" />
+              <Image src="/static/play.svg" width="32px" height="32px" alt="Banner image" />
               <span className={styles.playText}>Play</span>
             </button>
           </div>

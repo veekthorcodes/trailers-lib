@@ -1,7 +1,7 @@
 import { verifyToken } from "@utils/verifyToken";
 
 
-const useVerifyTokenOrRedirectUser = async (context) => {
+const verifyTokenOrRedirectUser = async (context) => {
   const token = context.req ? context.req.cookies.token : null
   const userId = await verifyToken(token)
 
@@ -20,5 +20,5 @@ const useVerifyTokenOrRedirectUser = async (context) => {
   }
 }
 
-export default useVerifyTokenOrRedirectUser;
+export default verifyTokenOrRedirectUser;
 

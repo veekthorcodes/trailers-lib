@@ -41,6 +41,7 @@ const Card = (props) => {
           layout="fill"
           className={styles.cardImg}
           onError={handleImgError}
+          alt="video image"
         />
       </motion.div>
     </div>

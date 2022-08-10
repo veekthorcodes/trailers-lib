@@ -19,18 +19,17 @@ function MyApp({ Component, pageProps }) {
     return () => {
       router.events.off("routeChangeComplete", handleRouteComple);
     };
-  }, []);
-
-  const handleLogin = async () => {
-    const loggedIn = await magic.user.isLoggedIn();
-    if (loggedIn) {
-      router.push("/");
-    } else {
-      router.push("/login");
-    }
-  };
+  }, [router.events]);
 
   useEffect(() => {
+    const handleLogin = async () => {
+      const loggedIn = await magic.user.isLoggedIn();
+      if (loggedIn) {
+        router.push("/");
+      } else {
+        router.push("/login");
+      }
+    };
     handleLogin();
   }, []);
 

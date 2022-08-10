@@ -31,7 +31,7 @@ export async function getStaticPaths() {
   const paths = videoIds.map((videoId) => {
     return { params: { videoId } };
   });
-  
+
   return { paths, fallback: true };
 }
 
@@ -51,7 +51,7 @@ const Video = ({ video }) => {
       }
     };
     videoData();
-  }, []);
+  }, [videoId]);
 
   const handleLike = async () => {
     setToggleLike(!toggleLike);
