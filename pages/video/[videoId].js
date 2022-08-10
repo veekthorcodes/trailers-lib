@@ -42,6 +42,8 @@ const Video = ({ video }) => {
   const videoId = router.query.videoId;
   const loading = useLoadingState();
 
+  const { title, publishTime, description, channel, viewCount } = video;
+
   useEffect(() => {
     const videoData = async () => {
       const res = await fetch(`/api/stats?videoId=${videoId}`);
@@ -85,7 +87,6 @@ const Video = ({ video }) => {
     });
   };
 
-  const { title, publishTime, description, channel, viewCount } = video;
   return (
     <div>
       {loading && <LoadingSpinner />}
