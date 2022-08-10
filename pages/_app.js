@@ -7,19 +7,7 @@ import "@styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const handleRouteComple = () => {
-      setIsLoading(false);
-    };
-
-    router.events.on("routeChangeComplete", handleRouteComple);
-
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteComple);
-    };
-  }, [router.events]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const handleLogin = async () => {
@@ -33,6 +21,18 @@ function MyApp({ Component, pageProps }) {
     handleLogin();
   }, []);
 
+  useEffect(() => {
+    const handleRouteComple = () => {
+      setIsLoading(false);
+    };
+    router.events.on("routeChangeComplete", handleRouteComple);
+    router.events.on("routeChangeError", handleRouteComple);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteComple);
+      router.events.off("routeChangeError", handleRouteComple);
+    };
+  }, [router]);
   return isLoading ? <LoadingSpinner /> : <Component {...pageProps} />;
 }
 

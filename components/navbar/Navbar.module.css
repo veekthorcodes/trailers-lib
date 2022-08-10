@@ -37,8 +37,7 @@
 
 .navItems {
   display: flex;
-  width: 50%;
-  margin-left: 1.5rem /* 24px */;
+  margin-right: 1.5rem /* 24px */;
   font-size: 1rem;
   list-style: none;
 }
@@ -46,7 +45,7 @@
 .navItem {
   font-weight: 600;
   cursor: pointer;
-  margin-right: 1.5rem /* 12px */;
+  margin: 0 0.5rem /* 12px */;
 }
 .navItem:hover {
   color: var(--red);
@@ -61,7 +60,7 @@
   font-size: 1rem;
 }
 
-.icon{
+.icon {
   opacity: 0;
 }
 .userBtn:hover > .icon {
@@ -117,12 +116,12 @@
   .logoLink {
     font-size: 1.5rem;
   }
-  
-  .navFlex{
+
+  .navFlex {
     width: 100%;
   }
   .navItems {
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
   .userBtn {
     font-size: 0.7rem;
@@ -141,5 +140,4 @@
     margin: 0.2rem auto;
     padding: 0.1rem 0.3rem;
   }
-
 }
