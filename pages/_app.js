@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }) {
       }
     };
     handleLogin();
-  }, [router]);
+  }, []);
 
   return isLoading ? <LoadingSpinner /> : <Component {...pageProps} />;
 }
