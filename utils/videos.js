@@ -17,7 +17,7 @@ export const getCommonVideos = async (search_url) => {
     // const data = testVideoData;
     if (data.error) {
       console.log("error from videos.js", data.error.message);
-      return [];
+      return testVideoData;
     }
     return data.items.map((item) => {
       return {
