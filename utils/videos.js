@@ -12,8 +12,9 @@ const videosFromYT = async (search_url) => {
 
 export const getCommonVideos = async (search_url) => {
   try {
-    const isDev = process.env.DEVELOPMENT;
-    const data = isDev ? testVideoData : await videosFromYT(search_url);
+    // const isDev = process.env.DEVELOPMENT;
+    // const data = isDev ? testVideoData : await videosFromYT(search_url); youtube api not working
+    const data = testVideoData;
     if (data.error) {
       console.log("error from videos.js", data.error.message);
       return [];
