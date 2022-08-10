@@ -169,7 +169,7 @@ export async function watchedVideos(token, userId) {
     { userId },
     token
   );
-  return res.data.stats;
+  return res?.data?.stats;
 }
 
 export async function myListVideos(token, userId) {

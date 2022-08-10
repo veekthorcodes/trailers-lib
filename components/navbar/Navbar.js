@@ -34,7 +34,7 @@ const Navbar = () => {
 
   const handleNavMyList = (e) => {
     e.preventDefault();
-    router.push("browse/my-list");
+    router.push("/browse/my-list");
   };
 
   const handleDropdown = (e) => {
@@ -65,41 +65,45 @@ const Navbar = () => {
 
   return (
     <div className={styles.container}>
+      {isLoading && <LoadingSpinner />}
       <div className={styles.wrapper}>
-        <Link href="/">
-          <a className={styles.logoLink}>
-            <div className={styles.logoWrapper}>Next-Flix</div>
-          </a>
-        </Link>
+        <div>
+          <Link href="/">
+            <a className={styles.logoLink}>
+              <div className={styles.logoWrapper}>Trailers LiB</div>
+            </a>
+          </Link>
+        </div>
 
-        <ul className={styles.navItems}>
-          <li className={styles.navItem} onClick={handleNavHome}>
-            Home
-          </li>
-          <li className={styles.navItem} onClick={handleNavMyList}>
-            My List
-          </li>
-        </ul>
+        <div className={styles.navFlex}>
+          <ul className={styles.navItems}>
+            <li className={styles.navItem} onClick={handleNavHome}>
+              Home
+            </li>
+            <li className={styles.navItem} onClick={handleNavMyList}>
+              My List
+            </li>
+          </ul>
 
-        <div className={styles.leftNavContainer}>
-          <div>
-            <button className={styles.userBtn} onClick={handleDropdown}>
-              {user}
-            </button>
-            {showDropdown ? (
-              <span className={styles.icon}>▲</span>
-            ) : (
-              <span className={styles.icon}>▼</span>
+          <div className={styles.leftNavContainer}>
+            <div>
+              <button className={styles.userBtn} onClick={handleDropdown}>
+                {user}
+                {showDropdown ? (
+                  <span className={styles.icon}>▲</span>
+                ) : (
+                  <span className={styles.icon}>▼</span>
+                )}
+              </button>
+            </div>
+            {showDropdown && (
+              <div className={styles.navDropdown}>
+                <a className={styles.linkName} onClick={handleLogout}>
+                  Sign Out
+                </a>
+              </div>
             )}
           </div>
-          {showDropdown && (
-            <div className={styles.navDropdown}>
-              <a className={styles.linkName} onClick={handleLogout}>
-                Sign Out
-              </a>
-            </div>
-          )}
-          {isLoading && <LoadingSpinner />}
         </div>
       </div>
     </div>

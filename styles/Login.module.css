@@ -80,7 +80,7 @@
   background-color: var(--red10);
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .headerWrapper {
     padding-left: 4rem /* 64px */;
     padding-right: 4rem /* 64px */;
@@ -94,5 +94,10 @@
 
   .mainWrapper {
     margin-top: 2rem /* 128px */;
+  }
+
+  .form {
+    width: 95%;
+    padding: 7rem 1rem;
   }
 }

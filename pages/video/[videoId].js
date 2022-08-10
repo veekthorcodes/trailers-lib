@@ -31,7 +31,7 @@ export async function getStaticPaths() {
   const paths = videoIds.map((videoId) => {
     return { params: { videoId } };
   });
-
+  
   return { paths, fallback: true };
 }
 

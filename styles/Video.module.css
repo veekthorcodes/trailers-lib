@@ -50,8 +50,8 @@
   margin: 0.75rem auto;
   font-weight: 100;
   font-size: 0.9rem;
-    line-height: 1.2rem;
-  font-family:Arial, Helvetica, sans-serif;
+  line-height: 1.2rem;
+  font-family: Arial, Helvetica, sans-serif;
   color: var(--white10);
   height: 30vh /* 208px */;
   overflow-y: hidden;
@@ -73,14 +73,6 @@
   color: var(--white30);
 }
 
-@media (min-width: 1024px) {
-  .modal {
-    top: 10%;
-    bottom: 40px;
-    width: 50%;
-  }
-}
-
 /** LikeDislike */
 
 .likeDislikeBtnWrapper {
@@ -97,4 +89,34 @@
   border-radius: 9999px;
   padding: 0.5rem /* 8px */;
   justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    top: 15%;
+    bottom: 40px;
+    width: 90%;
+  }
+
+  .likeDislikeBtnWrapper {
+    top: 25%;
+    padding: 0 0.5rem;
+  }
+
+  .videoPlayer{
+    height: 40%;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .modalBody{
+    padding: .5rem .75rem;
+    margin: .5rem .75rem;
+  }
+
+  .description, .subDetail{
+    font-size: .7rem;
+  }
 }

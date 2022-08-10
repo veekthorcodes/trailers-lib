@@ -1,123 +1,145 @@
 .container {
-    color: var(--white10);
-    position: fixed;
-    top: 0px;
-    background-image: linear-gradient(to bottom, var(--gradient-stops));
-  
-    --gradient-from: var(--black);
-    --gradient-stops: var(--gradient-from), var(--gradient-to, rgba(0, 0, 0, 0));
-    width: 100%;
-    z-index: 50;
-  }
-  
+  color: var(--white10);
+  position: fixed;
+  top: 0px;
+  background-image: linear-gradient(to bottom, var(--gradient-stops));
+
+  --gradient-from: var(--black);
+  --gradient-stops: var(--gradient-from), var(--gradient-to, rgba(0, 0, 0, 0));
+  width: 100%;
+  z-index: 50;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  justify-content: space-around;
+}
+
+.logoLink {
+  font-weight: 500;
+  font-size: 2rem;
+  color: var(--white10);
+}
+
+.logoWrapper {
+  color: var(--red);
+  width: 15rem;
+}
+
+.navFlex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navItems {
+  display: flex;
+  width: 50%;
+  margin-left: 1.5rem /* 24px */;
+  font-size: 1rem;
+  list-style: none;
+}
+
+.navItem {
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 1.5rem /* 12px */;
+}
+.navItem:hover {
+  color: var(--red);
+}
+
+.leftNavContainer {
+  margin: 0 2rem 0 auto;
+  color: var(--white);
+}
+
+.userBtn {
+  font-size: 1rem;
+}
+
+.icon{
+  opacity: 0;
+}
+.userBtn:hover > .icon {
+  opacity: 1;
+}
+
+.navDropdown {
+  position: absolute;
+  margin: 1rem auto;
+  padding: 0.2rem 0.5rem;
+  background-color: var(--black50);
+  border-width: 1px;
+  text-align: center;
+  color: var(--white);
+  border-radius: 0.25rem;
+  border-color: var(--blue);
+  box-shadow: var(--shadow30, 0 0 #0000), var(--ring-shadow, 0 0 #0000),
+    var(--shadow30);
+}
+
+.linkName {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+  display: block;
+  padding: 0.3rem 0.8rem;
+  font-size: 1rem /* 16px */;
+  line-height: 1.25rem /* 20px */;
+  border-radius: 0.25rem /* 4px */;
+  cursor: pointer;
+}
+
+.linkName:hover {
+  color: var(--red);
+}
+
+.lineWrapper {
+  padding-top: 0.5rem /* 8px */;
+  padding-bottom: 0.5rem /* 8px */;
+}
+
+@media (max-width: 768px) {
   .wrapper {
-    display: flex;
+    padding: 1rem 0.5rem;
+    flex-direction: column;
     align-items: center;
-    padding: .5rem 1rem;
-    justify-content: space-between;
   }
-  
-  .logoLink {
-    font-weight: 500;
-    font-size: 1rem;
-    color: var(--white10);
-  }
-  
+
   .logoWrapper {
-    color: var(--red);
-    font-size: 2.5rem;
-    width: 15rem;
+    width: 100%;
+  }
+
+  .logoLink {
+    font-size: 1.5rem;
   }
   
+  .navFlex{
+    width: 100%;
+  }
   .navItems {
-    display: flex;
-    flex-direction: row;
-    width: 50%;
-    margin-left: 1.5rem /* 24px */;
-    font-size: 0.875rem /* 14px */;
-    font-size: 1rem;
-    line-height: 1.25rem /* 20px */;
-    list-style: none;
+    font-size: .8rem;
   }
-  
-  .navItem {
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-right: 0.75rem /* 12px */;
-  }
-  .navItem:hover {
-    color: var(--red);
-  }
-  
-  .leftNavContainer {
-    margin: 0 2rem 0 auto;
-    color: var(--white);
-  }
-  
   .userBtn {
-    font-size: 1rem;
+    font-size: 0.7rem;
   }
-  .userBtn:hover + .icon{
-    color: var(--red);
+  .leftNavContainer {
+    margin: 0 1rem 0 auto;
+  }
+  .icon {
+    font-size: 0.5rem;
+  }
+  .linkName {
+    font-size: 0.7rem;
   }
 
   .navDropdown {
-    position: absolute;
-    margin: 1rem auto;
-    padding : 0.2rem 0.5rem;
-    background-color: var(--black50);
-    border-width: 1px;
-    text-align: center;
-    color: var(--white);
-    border-radius: 0.25rem;
-    border-color: var(--blue);
-    box-shadow: var(--shadow30, 0 0 #0000), var(--ring-shadow, 0 0 #0000),
-      var(--shadow30);
+    margin: 0.2rem auto;
+    padding: 0.1rem 0.3rem;
   }
-  
-  .linkName {
-    transition-property: background-color, border-color, color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 200ms;
-    display: block;
-    padding: .3rem .8rem;
-    font-size: 1rem /* 16px */;
-    line-height: 1.25rem /* 20px */;
-    border-radius: 0.25rem /* 4px */;
-    cursor: pointer;
-  }
-  
-  .linkName:hover {
-    color: var(--red);
-  }
-  
-  .lineWrapper {
-    padding-top: 0.5rem /* 8px */;
-    padding-bottom: 0.5rem /* 8px */;
-  }
-  
-  @media (max-width: 768px) {
-    .wrapper {
-      padding: 1rem 1rem;
-      flex-direction: row;
-      align-items: center;
-    }
 
-    .logoWrapper {
-      font-size: 1.5rem;
-      width: 8rem;
-    }
-  
-    .logoLink {
-      margin-bottom: 0px;
-    }
-  
-    .navItems {
-      margin-left: 3rem /* 48px */;
-    }
-  
-    .navItem {
-      margin-right: 1.25rem /* 20px */;
-    }
-  }
+}

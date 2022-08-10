@@ -66,12 +66,12 @@ const login = () => {
   return (
     <div>
       <Head>
-        <title>Next-Flix Sign In</title>
+        <title>Trailers LiB Sign In</title>
       </Head>
 
       <div className={styles.container}>
         <a>
-          <div className={styles.logoWrapper}>Next-Flix</div>
+          <div className={styles.logoWrapper}>Trailers LiB</div>
         </a>
 
         <main className={styles.main}>
